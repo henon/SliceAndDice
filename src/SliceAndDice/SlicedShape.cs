@@ -17,21 +17,21 @@ namespace SliceAndDice
         {
             OriginalShape = shape;
             // we need at least one slice per dimension in order to correctly handle multi-dimensional arrays, if not given, extend by Slice.All() which returns the whole dimension
-            if (slices == null || slices.Length != shape.NDim)
-            {
-                var tempslices = slices;
-                slices = new Slice[shape.NDim];
-                for (int dim = 0; dim < shape.NDim; dim++)
-                {
-                    if (tempslices.Length > dim)
-                        slices[dim] = tempslices[dim];
-                    else
-                        slices[dim] = Slice.All();
-                }
-            }
+            var tempslices = slices;
+            if (slices == null)
+                tempslices = new Slice[0];
+            slices = new Slice[shape.NDim];
             for (int dim = 0; dim < shape.NDim; dim++)
             {
-                var slice = slices[dim];
+                if (tempslices.Length > dim)
+                    slices[dim] = tempslices[dim] ?? Slice.All(); // <-- allow null for Slice.All()
+                else
+                    slices[dim] = Slice.All();
+            }
+
+            for (int dim = 0; dim < shape.NDim; dim++)
+            {
+                var slice = slices[dim] ?? Slice.All();                slices[dim] = slice; // make sure to overwrite potential nulls
                 var size = shape.Dimensions[dim];
                 if (slice.IsIndex)
                 {

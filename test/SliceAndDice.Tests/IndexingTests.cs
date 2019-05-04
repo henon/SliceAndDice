@@ -1,4 +1,4 @@
-﻿// Copyright (c) SciStack
+﻿// Copyright (c) SciStack/NumSharp 2018
 // Copyright (c) Henon 2019
 
 using System.Linq;

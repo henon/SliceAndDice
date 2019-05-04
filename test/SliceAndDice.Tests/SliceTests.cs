@@ -84,7 +84,7 @@ namespace SliceAndDice.Tests
 
             // Create functions
             Assert.AreEqual(Slice.All(), new Slice(":"));
-            Assert.AreEqual(Slice.SingleValue(17), new Slice("17:18"));
+            Assert.AreEqual(Slice.Index(17), new Slice("17:18"));
 
             // invalid values
             Assert.Throws<ArgumentException>(() => new Slice(""));

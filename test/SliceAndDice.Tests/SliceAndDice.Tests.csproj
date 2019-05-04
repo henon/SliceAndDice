@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PrettyPrintingTests.cs" />
     <Compile Include="ArraySliceTests.cs" />
     <Compile Include="IndexingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

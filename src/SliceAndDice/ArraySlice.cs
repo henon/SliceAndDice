@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace SliceAndDice
 {
@@ -131,16 +132,62 @@ namespace SliceAndDice
 
         public static ArraySlice<int> Range(int stop, int start = 0, int step = 1)
         {
-            if (step<1)
+            if (step < 1)
                 throw new ArgumentException("Step must be > 0. Given: " + step);
             if (stop < start)
                 (start, stop) = (stop, start);
-            var size =Math.Abs( (int) Math.Ceiling((stop - start) / (double) step));
+            var size = Math.Abs((int)Math.Ceiling((stop - start) / (double)step));
             var data = new int[size];
             int index = 0;
             for (int i = start; i < stop; i += step)
                 data[index++] = i;
             return new ArraySlice<int>(data);
+        }
+
+        public override string ToString()
+        {
+            var s = new StringBuilder();
+            PrettyPrint(s);
+            return s.ToString();
+        }
+
+        public string ToString(bool flat=false)
+        {
+            var s = new StringBuilder();
+            PrettyPrint(s, flat);
+            return s.ToString();
+        }
+
+        private void PrettyPrint(StringBuilder s, bool flat = false)
+        {
+            if (Shape.Dimensions.Length == 0)
+            {
+                s.Append($"{GetValue(0)}");
+                return;
+            }
+            if (Shape.Dimensions.Length == 1)
+            {
+                s.Append("[");
+                s.Append(string.Join(", ", this.Select(x => x == null ? "null" : x.ToString())));
+                s.Append("]");
+                return;
+            }
+            var last_dim = Shape.Dimensions.Last();
+            var slices = new Slice[Shape.Dimensions.Length];
+            s.Append("[");
+            for (int i = 0; i < last_dim; i++)
+            {
+                slices[0] = Slice.Index(i);
+                var n_minus_one_dim_slice = this.GetSlice(slices);
+                n_minus_one_dim_slice.PrettyPrint(s,flat);
+                if (i < last_dim - 1)
+                {
+                    s.Append(", ");
+                    if (!flat)
+                        s.AppendLine();
+                }
+            }
+            s.Append("]");
         }
     }
 }
