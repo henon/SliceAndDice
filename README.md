@@ -32,7 +32,7 @@ var a = new ArraySlice<char>("Stanley Yelnats".ToCharArray());
 Assert.AreEqual("stanleY yelnatS", string.Join("", a.GetSlice("::-1")));
 ```
 
-Slicing with a negative step is effectively reversing the slice's order. The cool think about that is that it requires no copying or enumeration of the data to complete this operation and also does not reverse the order of the original data. Instead the view (which is the result of the operation <code> a.GetSlice("::-1")</code>) presents the data in reversed order.
+Slicing with a negative step is effectively reversing the slice's order. What's nice about that is, that it requires no copying or enumeration of the data to complete this operation much like <code>IEnumerable<T>.Reverse()</code>. The difference is that, the view (which is the result of the operation <code> a.GetSlice("::-1")</code>) presents the data in reversed order and you can index into that reversed sequence without ever having to enumerate it at all. Also, due to the fact that <code>IEnumerators</code> can only be enumerated once, they usually are not suitable for being passed in and out of functions.
 
 ## Motivation
 
