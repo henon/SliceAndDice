@@ -172,15 +172,13 @@ namespace SliceAndDice
                 s.Append("]");
                 return;
             }
-            var last_dim = Shape.Dimensions.Last();
-            var slices = new Slice[Shape.Dimensions.Length];
+            var size = Shape.Dimensions.First();
             s.Append("[");
-            for (int i = 0; i < last_dim; i++)
+            for (int i = 0; i < size; i++)
             {
-                slices[0] = Slice.Index(i);
-                var n_minus_one_dim_slice = this.GetSlice(slices);
+                var n_minus_one_dim_slice = this.GetSlice(Slice.Index(i));
                 n_minus_one_dim_slice.PrettyPrint(s,flat);
-                if (i < last_dim - 1)
+                if (i < size - 1)
                 {
                     s.Append(", ");
                     if (!flat)
