@@ -6,7 +6,7 @@
 
 ### Working with high-dimensional data efficiently
 
-![Reshape and Slice](doc/images/reshape_and_slice_v2.png)
+![Reshape and Slice](doc/images/reshape_and_slice_v3.png)
 
 If you need to treat a data array as a volume and work with parts of it without having to do mind-boggling coordinate transformation calculations then <code>ArraySlice&lt;T&gt;</code> is for you.
 
