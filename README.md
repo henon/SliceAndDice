@@ -24,6 +24,16 @@ Being able to pass only local portions of the underlying data (i.e. small patche
 
 The end-result of the chained slicing operations <code>.Slice("2:8,::2").Slice("1::3").Slice(":,2:")</code> could also be obtained by a single operation like this: <code>.Slice("3:8:3,2::2")</code>. <code>ArraySlice&lt;T&gt;</code> optimizes this internally so you don't have to pollute your algorithms with knowledge about the structure of the data. 
 
+### Efficiently reverse the order of the elements
+
+```csharp
+var a = new ArraySlice<char>("Stanley Yelnats".ToCharArray());
+// reverse the char[] without enumeration or copying! 
+Assert.AreEqual("stanleY yelnatS", string.Join("", a.GetSlice("::-1")));
+```
+
+Slicing with a negative step is effectively reversing the slice's order. The cool think about that is that it requires no copying or enumeration of the data to complete this operation and also does not reverse the order of the original data. Instead the view (which is the result of the operation <code> a.GetSlice("::-1")</code>) presents the data in reversed order.
+
 ## Motivation
 
 <code>ArraySlice&lt;T&gt;</code> is inspired by the array data structure of the popular Python library [NumPy](https://www.numpy.org/) which always creates a view of the original array, no matter what operation is applied to it. <code>ArraySlice&lt;T&gt;</code> implements the same slicing syntax as NumPy and always creates a view of the original data, even if you for instance slice out 1D rows of 2D planes that were sliced out of a 3D volume. In contrast to NumPy, however, <code>ArraySlice&lt;T&gt;</code> does not offer any numerical computation functions. It merely focuses on the view and slicing mechanics in order to remain small and light-weight. 
