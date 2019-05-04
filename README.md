@@ -1,6 +1,6 @@
-# ArraySlicey&lt;T&gt;
+# ArraySlice&lt;T&gt;
 
-SliceAndDice features <code>ArraySlice&lt;T&gt;</code>, a lightweight wrapper around indexable data structures like <code>T[]</code> for creating arbitrary N-dimimensional views of the data as well as views of (sparse) sub-sections of ArraySlices without copying the underlying data.
+<code>ArraySlice&lt;T&gt;</code> is a lightweight wrapper around indexable data structures like <code>T[]</code> for creating arbitrary N-dimimensional views of the data as well as views of (sparse) sub-sections of ArraySlices without copying the underlying data.
 
 # Use Cases
 
