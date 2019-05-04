@@ -5,7 +5,7 @@
 # Use Cases
 
 If you need to treat a data array as a volume and work with parts of it without having to do mind-boggling coordinate transformation calculations or copying arrays <code>ArraySlice&lt;T&gt;</code> is for you.
-![Reshape and Slice](doc/images/reshape_and_slice.png)
+![Reshape and Slice](doc/images/reshape_and_slice_v2.png)
 
 All <code>ArraySlices</code> created by <code>Reshape</code> or <code>Slice</code> operations are only views of the original data. When you iterate over, read or write elements of a view you access the original data array. <code>ArraySlice&lt;T&gt;</code> transparently does the appropriate index transformations for you.
 
