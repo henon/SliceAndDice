@@ -417,6 +417,14 @@ namespace SliceAndDice.Tests
         }
 
         [Test]
+        public void ReverseWithNegativeStep()
+        {
+            var a = new ArraySlice<char>("Stanley Yelnats".ToCharArray());
+            // is it reversed?
+            Assert.AreEqual("stanleY yelnatS", string.Join("", a.GetSlice("::-1")));
+        }
+
+        [Test]
         public void ImageProcessingExample()        {            var width = 4; // px
             var height = 4; // px
             var bytes_per_pixel = 3; // r, g, b
