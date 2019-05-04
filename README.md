@@ -112,3 +112,8 @@ pixel: [0, 0, 0]
 ## License
 
 MIT
+
+## Releases
+
+[SliceAndDice.dll](https://www.nuget.org/packages/SliceAndDice/1.0.0) Version 1.0.0 is available as Nuget Package for .Net Standard
+
