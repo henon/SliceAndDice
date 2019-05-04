@@ -1,4 +1,4 @@
-﻿// Copyright (c) Henon 2019
+﻿// Copyright (c) 2019, Henon <meinrad.recheis@gmal.com>
 
 using System;
 using System.Collections.Generic;
@@ -9,8 +9,6 @@ namespace SliceAndDice
 {
     public class SlicedShape : Shape
     {
-        private int[] _reduced_dimensions;
-
         public override bool IsSliced => true;
 
         public SlicedShape(Shape shape, Slice[] slices)

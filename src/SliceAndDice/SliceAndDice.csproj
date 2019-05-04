@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Meinrad Recheis (Henon)</Authors>
+    <Company>Open Source</Company>
+    <Description>SliceAndDice features ArraySlice&lt;T&gt;, a lightweight wrapper around indexable data structures like T[] for creating arbitrary N-dimimensional views of the data as well as views of (sparse) sub-sections of array slices without copying the underlying data.</Description>
+    <Copyright>(c) 2019 Meinrad Recheis (Henon)</Copyright>
+    <PackageLicenseUrl>https://github.com/henon/SliceAndDice/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/henon/SliceAndDice</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/henon/SliceAndDice</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
 </Project>

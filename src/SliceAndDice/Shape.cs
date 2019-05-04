@@ -1,6 +1,6 @@
 ﻿// Note: the Shape class has been taken from SciStack/NumSharp and enhanced/changed
 // Copyright (c) SciStack/NumSharp 2018
-// Copyright (c) Henon 2019
+// Copyright (c) 2019, Henon <meinrad.recheis@gmal.com>
 
 using System;
 using System.Collections.Generic;
