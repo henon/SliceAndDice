@@ -30,6 +30,8 @@ The end-result of the chained slicing operations <code>.Slice("2:8,::2").Slice("
 
 By the way, the view mechanics and the slicing algorithm of <code>ArraySlice&lt;T&gt;</code> are one of my main contributions to [NumSharp](https://github.com/SciSharp/NumSharp) which is a C# port of NumPy.
 
+## Examples
+
 ### Example: Bitmap Manipulation
 Let's say you have no image manipulation library and you want to manipulate the pixels of an image as RGB <code>byte[]</code>:
 
@@ -106,3 +108,7 @@ pixel: [0, 0, 0]
 |#oo#|
 |####|
 ```
+
+## License
+
+MIT
