@@ -6,15 +6,17 @@
 
 ### Working with high-dimensional data efficiently
 
-If you need to treat a data array as a volume and work with parts of it without having to do mind-boggling coordinate transformation calculations then <code>ArraySlice&lt;T&gt;</code> is for you.
-
 ![Reshape and Slice](doc/images/reshape_and_slice_v2.png)
+
+If you need to treat a data array as a volume and work with parts of it without having to do mind-boggling coordinate transformation calculations then <code>ArraySlice&lt;T&gt;</code> is for you.
 
 All <code>ArraySlices</code> created by <code>Reshape</code> or <code>Slice</code> operations are only views of the original data. When you iterate over, read or write elements of a view you access the original data array. <code>ArraySlice&lt;T&gt;</code> transparently does the appropriate index transformations so you can index into the slice using relative coordinates.
 
 ### Multiple views of the same data
 
+![Multiple Views](doc/images/multiple_views.png)
 
+Being able to pass only local portions of the underlying data (i.e. small patches of a big image) in and out of algorithms without copying is essential for runtime-performance, especially with big data sets. There exist other solutions to this problem like <code>ArraySegment&lt;T&gt;</code> or the new <code>Span&lt;T&gt;</code> and <code>Memory&lt;T&gt;</code> of .net Core but they lack the ability to step, that is skip data with a fixed stride (see below), or have other limitations, like being only 1-dimensional. If you don't need stepping or multiple dimensions, you might prefer those for their slightly better indexing performance.
 
 ### Nested views
 
