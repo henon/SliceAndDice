@@ -40,9 +40,38 @@ Slicing with a negative step is effectively reversing the slice's order. What's 
 
 By the way, the view mechanics and the slicing algorithm of <code>ArraySlice&lt;T&gt;</code> are one of my main contributions to [NumSharp](https://github.com/SciSharp/NumSharp) which is a C# port of NumPy.
 
-## How to use
+## ArraySlice&lt;T&gt; Usage
 ### Creating an ArraySlice 
+
+An ArraySlice can be created over any .NET data structure, that supports indexing and which length is known. Currently only <code>T[]</code> and <code>List&lt;T&gt;</code> are supported, but support for more types will be added as required. 
+
+```csharp
+// create a 1D Array of strings from a List<string>. 
+// Note: the List should not be changed after wrapping it inside ArraySlice
+var b = new ArraySlice<string>( new List<string> {"Aardvark", "Ant", "Bear", ... });
+```
+
+By default, a 1D ArraySlice is created. If you specify a <code>Shape</code> the underlying data will be represented as an N-dimensional matrix or volume.
+
+```csharp
+// create a 3D volume of bytes from a byte[]
+var a = new ArraySlice<byte>( new byte[72], new Shape(3,4,6));
+```
+
 ### Shape
+
+The <code>Shape</code> of an <code>ArraySlice&lt;T&gt;</code> describes how many dimensions it has and what the extent of these dimensions is:
+
+```csharp
+new Shape(100)      // a 1D array of length 100
+new Shape(3,5)      // a 2D matrix with 3 rows and 5 columns
+new Shape(2,3,5)    // a 3D volume of 2 matrices with 3 rows and 5 columns
+new Shape(2,3,5,7, ... N) // an N-dimensional volume
+new Shape()         // a scalar (Shape of return values when indexing into 1D array with [Slice.Index(...)]
+```
+
+Note: in order to be able to represent data as an N-dimensional volume, the length of the data must be the product of all dimensions of the shape.
+
 ### Slice notation
 <code>ArraySlice&lt;T&gt;</code> can be sliced using Python slice notation (with the exception that ArraySlice<T> does not copy the underlying array data, like NumPy. 
 
@@ -118,6 +147,20 @@ a[":100, 5"]     // return the first 100 elements of the 5th column
 ```
 
 ### Slicing N-dimensional arrays
+
+When slicing an N-dimensional slice of an N-dimensional ArraySlice you have to specify N slicing definitions, obviously.
+
+```csharp
+var cube=ArraySlice<int>.Range(27).Reshape(3,3,3);
+// slicing a 2x2x2 cube out of a 3x3x3 cube by skipping the first element of each dimension
+var cube1=cube["1:,1:,1:"];
+```
+
+If you specify less slicing definitions than dimensions, the missing dimensions will be returned in whole.
+
+### Reducing dimensions
+
+
 
 ## Examples
 
