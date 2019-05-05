@@ -1,5 +1,5 @@
-﻿// Note: the Shape tests has been taken from SciStack/NumSharp and enhanced
-// Copyright (c) SciStack
+﻿// Note: the Shape tests has been taken from SciSharp/NumSharp
+// Copyright (c) SciSharp
 // Copyright (c) 2019, Henon <meinrad.recheis@gmal.com>
 
 using System;

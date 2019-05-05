@@ -1,5 +1,5 @@
-﻿// Note: the Shape class has been taken from SciStack/NumSharp and enhanced/changed
-// Copyright (c) SciStack/NumSharp 2018
+﻿// Note: the Shape class has been taken from SciSharp/NumSharp and enhanced/changed
+// Copyright (c) SciSharp 2018
 // Copyright (c) 2019, Henon <meinrad.recheis@gmal.com>
 
 using System;
