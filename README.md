@@ -40,6 +40,85 @@ Slicing with a negative step is effectively reversing the slice's order. What's 
 
 By the way, the view mechanics and the slicing algorithm of <code>ArraySlice&lt;T&gt;</code> are one of my main contributions to [NumSharp](https://github.com/SciSharp/NumSharp) which is a C# port of NumPy.
 
+## How to use
+### Creating an ArraySlice 
+### Shape
+### Slice notation
+<code>ArraySlice&lt;T&gt;</code> can be sliced using Python slice notation (with the exception that ArraySlice<T> does not copy the underlying array data, like NumPy. 
+
+A slice is constructed by **start:stop:step** notation
+
+Examples: 
+
+```csharp
+a["5:10"]        // return 5 elements starting at index 5 through index 9
+a["5:"]          // return the rest of the array starting at index 5
+a[":10"]         // return 10 elements from the beginning through index 9 (same as "0:10")
+```
+
+The key point to remember is that the **:stop** value represents the first value that is not 
+in the selected slice. So, the difference between stop and start is the number of elements 
+selected (if step is 1, the default).
+
+There is also the step value, which can be used with any of the above:
+
+```csharp
+a[$"{start}:{stop}:{step}"] // start through not past stop, by step
+a[new Slice(start, stop, step)] // same as [$"{start}:{stop}:{step}"]
+```
+
+Note the difference between indexing with integers and strings. Indexing with integers will return a scalar value of type <code>T</code>. Indexing with slice notation strings will return an <code>ArraySlice&lt;T&gt;</code>, the same as <code>.Slice()</code> would.
+
+```csharp
+a[5]           // returns the element at index 5
+a["5"]         // returns a ArraySlice<T> which contains only the element at index 5, Shape is (), which means scalar
+a["5:6:1"]     // same as ["5"] except for the Shape which is (1)
+```
+
+The other feature is that start or stop may be a negative number, which means it counts 
+from the end of the array instead of the beginning. So:
+
+```csharp
+a[-1]         // last item in the array
+a["-2:"]      // last two items in the array
+a[":-2"]      // everything except the last two items
+```
+
+Similarly, step may be a negative number:
+
+```csharp
+a["::-1"]     // all items in the array, reversed
+a["1::-1"]    // the first two items, reversed
+a[":-3:-1"]   // the last two items, reversed
+a["-3::-1"]   // everything except the last two items, reversed
+```
+
+Like *NumPy* <code>ArraySlice&lt;T&gt;</code> is kind to the programmer if there are fewer items than 
+you ask for. For example, if you  ask for <code>a[":-2"]</code> and a only contains one element, you get an 
+empty list instead of an error. Sometimes you would prefer the error, so you have to be aware 
+that this may happen.
+
+### Slicing 2-dimensional arrays
+
+The above summary of the slicing notation showed only 1D examples. <code>ArraySlice&lt;T&gt;</code> can represent and slice 2D, 3D or ND shaped data by allowing a slice definition per dimension separated by comma.
+
+```csharp
+a[":"]           // return everything (but without copying)
+a["5, :"]        // return the whole 5th row of a 2D matrix
+a[Slice.Index(5), Slice.All()]   // same as ["5, :"]
+a["5, :100"]     // return the first 100 elements of the 5th row
+```
+
+Note that <code>ArraySlice&lt;T&gt;</code> represents 2D matrices in **row major** style, meaning that you address an element in a 2D array like this: <code>a[row, column]</code>. By this definition you can access a column by indexing the row with ":" like this:
+
+```csharp
+a[":, 5"]        // return the whole 5th column of a 2D matrix
+a[Slice.All(), Slice.Index(5)]   // same as [":, 5"]
+a[":100, 5"]     // return the first 100 elements of the 5th column
+```
+
+### Slicing N-dimensional arrays
+
 ## Examples
 
 ### Example: Bitmap Manipulation
