@@ -20,16 +20,34 @@ namespace SliceAndDice
             Shape = shape ?? new Shape(data.Length);
             GetValueAt = i => data[i];
             SetValueAt = (i, value) => data[i] = value;
-            IEnumerator = () => data.AsEnumerable().GetEnumerator();
+            IEnumerator = data.AsEnumerable().GetEnumerator;
         }
 
-        public ArraySlice(List<T> data, Shape shape = null)
+        public ArraySlice(IList<T> data, Shape shape = null)
         {
             _data = data;
             Shape = shape ?? new Shape(data.Count);
             GetValueAt = i => data[i];
             SetValueAt = (i, value) => data[i] = value;
-            IEnumerator = () => data.AsEnumerable().GetEnumerator();
+            IEnumerator = data.AsEnumerable().GetEnumerator;
+        }
+
+        public ArraySlice(IList data, Shape shape = null)
+        {
+            _data = data;
+            Shape = shape ?? new Shape(data.Count);
+            GetValueAt = i => (T)data[i];
+            SetValueAt = (i, value) => data[i] = value;
+            IEnumerator = data.OfType<T>().GetEnumerator;
+        }
+
+        public ArraySlice(Array data, Shape shape = null)
+        {
+            _data = data;
+            Shape = shape ?? new Shape(data.Length);
+            GetValueAt = i => (T)data.GetValue(i);
+            SetValueAt = (i, value) => data.SetValue(value, i);
+            IEnumerator = data.OfType<T>().GetEnumerator;
         }
 
         public ArraySlice(ArraySlice<T> data, Shape shape = null)
@@ -38,6 +56,15 @@ namespace SliceAndDice
             Shape = data.Shape;
             GetValueAt = i => data[i];
             SetValueAt = (i, value) => data[i] = value;
+            IEnumerator = data.GetEnumerator;
+        }
+
+        public ArraySlice(IReadOnlyList<T> data, Shape shape = null)
+        {
+            _data = data;
+            Shape = shape ?? new Shape(data.Count);
+            GetValueAt = i => data[i];
+            SetValueAt = (i, value) => { /* ignore */ };
             IEnumerator = data.GetEnumerator;
         }
 
@@ -57,8 +84,10 @@ namespace SliceAndDice
             switch (data)
             {
                 case T[] array: return new ArraySlice<T>(array, shape);
-                case List<T> array: return new ArraySlice<T>(array, shape);
+                case IList<T> array: return new ArraySlice<T>(array, shape);
+                case IReadOnlyList<T> array: return new ArraySlice<T>(array, shape);
                 case ArraySlice<T> array: return new ArraySlice<T>(array, shape);
+                case IList array: return new ArraySlice<T>(array, shape);
                 case IEnumerable<T> array: return new ArraySlice<T>(array, shape);
                 default:
                     throw new ArgumentException($"Type {data.GetType()} not supported yet?");

@@ -45,7 +45,7 @@ namespace SliceAndDice.Tests
             Assert.IsTrue(iter.MoveNext());
             Assert.AreEqual(2, iter.Current);
             Assert.IsFalse(iter.MoveNext());
-            a = new ArraySlice<int>(new List<int>() { 0, 1, 2 });
+            a = new ArraySlice<int>((IList<int>)new List<int>() { 0, 1, 2 });
             iter = a.GetEnumerator();
             Assert.IsTrue(iter.MoveNext());
             Assert.AreEqual(0, iter.Current);
