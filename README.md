@@ -190,7 +190,7 @@ As a result of slicing with range notation above sample gives us <code>row</code
 
 ## Examples
 
-
+* [Image manipulation](https://github.com/henon/SliceAndDice/wiki/Example:-Bitmap-Manipulation)
 
 ## License
 
@@ -199,4 +199,9 @@ MIT
 ## Releases
 
 [SliceAndDice.dll](https://www.nuget.org/packages/SliceAndDice/1.0.0) Version 1.0.0 is available as Nuget Package for .Net Standard
+
+## Links and References
+* [NumPy](https://www.numpy.org/)
+* [NumSharp](https://github.com/SciSharp/NumSharp)
+
 
