@@ -1,6 +1,6 @@
 # ArraySlice&lt;T&gt;
 
-<code>ArraySlice&lt;T&gt;</code> is a lightweight wrapper around indexable data structures like <code>T[]</code> for creating arbitrary N-dimimensional views of the data as well as views of (sparse) sub-sections of ArraySlices without copying the underlying data.
+<code>ArraySlice&lt;T&gt;</code> is a lightweight wrapper around indexable .NET data structures like <code>T[]</code> or <code>IList&lt;T&gt;</code> for creating arbitrary N-dimimensional views of the data as well as views of (sparse) sub-sections of ArraySlices without copying the underlying data.
 
 ## Use Cases
 ### Working with sub-sections of an array efficiently
