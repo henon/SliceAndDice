@@ -161,7 +161,7 @@ var cube1=cube["1:,1:,1:"];
 
 If you specify less slicing definitions than dimensions, the missing dimensions will be returned in whole.
 
-### Reducing dimensions
+### Reducing dimensions by slicing
 
 When you specify an index instead of a range (i.e. <code>["5"]</code> instead of <code>["5:6:1"]</code>) you get a slice of reduced dimensions. Let me explain in more detail:
 
@@ -174,7 +174,7 @@ var row = matrix["1"]; // Note: this is NOT the same as matrix[1] which gives th
 var column = matrix[":,1"];
 ```
 
-The result of both slicing operations is a 1D vector of shape (5), so we have effectively reduced the dimensions from two to one. In comparison, if not using index notation for slicing but range notation we get a 2D matrix with only one column or one row:
+The result of both slicing operations is a 1D vector of shape (5), so we have effectively reduced the dimensions from two to one. In comparison, if not using *index notation* for slicing but *range notation* we get a 2D matrix with only one column or one row:
 
 ```csharp
 var matrix=ArraySlice<int>.Range(25).Reshape(5,5);
@@ -184,7 +184,32 @@ var row = matrix["1:2"];
 var column = matrix[":,1:2"];
 ```
 
-As a result of slicing with range notation above sample gives us <code>row</code> as a 2D matrix of shape (1,5) and <code>column</code> as a matrix of shape (5,1).
+As a result of slicing with range notation above sample gives us <code>row</code> as a 2D matrix of shape (1,5) and <code>column</code> as a matrix of shape (5,1). So you can see, in comparison to the *index notation*, the *range notation* preserves the dimensionality of the view.
+
+When working with high-dimensional data reducing the dimensionality can significantly reduce the complexity of a solution. As an example, <code>ArraySlice&lt;T&gt;.ToString()</code> is able to print out volumes of arbitrary dimension. If you look at the code of <code>.ToString()</code> you will see that it is quite simple, because it recursively slices the volume into smaller bits with less dimensions and prints them out.
+
+```csharp
+Console.WriteLine(new ArraySlice<int>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
+Console.WriteLine();
+Console.WriteLine(ArraySlice<int>.Range(9).Reshape(3, 3)); // 3x3 matrix
+Console.WriteLine();
+Console.WriteLine(ArraySlice<int>.Range(8).Reshape(2, 2, 2)); // 2x2x2 cube
+```
+
+Produces:
+<pre>
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+[[0, 1, 2], 
+ [3, 4, 5], 
+ [6, 7, 8]]
+
+[[[0, 1], 
+  [2, 3]],
+  
+ [[4, 5], 
+  [6, 7]]]
+</pre>
 
 ## Examples
 
