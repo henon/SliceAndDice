@@ -3,6 +3,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -175,19 +176,17 @@ namespace SliceAndDice
 
         public override string ToString()
         {
-            var s = new StringBuilder();
-            PrettyPrint(s);
-            return s.ToString();
+            return ToString(flat:false);
         }
 
-        public string ToString(bool flat=false)
+        public string ToString(bool flat)
         {
             var s = new StringBuilder();
             PrettyPrint(s, flat);
             return s.ToString();
         }
 
-        private void PrettyPrint(StringBuilder s, bool flat = false)
+        private void PrettyPrint(StringBuilder s, bool flat = false, int indent=0)
         {
             if (Shape.Dimensions.Length == 0)
             {
@@ -201,17 +200,24 @@ namespace SliceAndDice
                 s.Append("]");
                 return;
             }
-            var size = Shape.Dimensions.First();
             s.Append("[");
+            var size = Shape.Dimensions.First();
             for (int i = 0; i < size; i++)
             {
-                var n_minus_one_dim_slice = this.GetSlice(Slice.Index(i));
-                n_minus_one_dim_slice.PrettyPrint(s,flat);
+                if (i>0)
+                    s.Append(new string(' ', indent+1));
+                // reduce the N-dimensional volume to a (N-1)-dimensional sub-volume
+                var sub_volume = this.GetSlice(Slice.Index(i));
+                sub_volume.PrettyPrint(s,flat, indent+1);
                 if (i < size - 1)
                 {
-                    s.Append(", ");
+                    s.Append(",");
                     if (!flat)
+                    {
                         s.AppendLine();
+                        if (sub_volume.Shape.Dimensions.Length>1)
+                            s.AppendLine();
+                    }
                 }
             }
             s.Append("]");

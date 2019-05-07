@@ -28,11 +28,11 @@ namespace SliceAndDice.Tests
         [Test]
         public void NonFlatTests()
         {
-            var a = new ArraySlice<int>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);            Console.WriteLine(a);
-            Assert.AreEqual("[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]", a.ToString(flat: false));            a = ArraySlice<int>.Range(9).Reshape(3, 3);            Console.WriteLine(a);            Assert.AreEqual("[[0, 1, 2], \r\n" +                                    "[3, 4, 5], \r\n" +                                    "[6, 7, 8]]", a.ToString(flat: false));
+            var a = new ArraySlice<int>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);            //Console.WriteLine(a);
+            //Assert.AreEqual("[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]", a.ToString(flat: false));            a = ArraySlice<int>.Range(9).Reshape(3, 3);            Console.WriteLine(a);            Assert.AreEqual("[[0, 1, 2],\r\n" +                                    " [3, 4, 5],\r\n" +                                    " [6, 7, 8]]", a.ToString(flat: false));
             a = ArraySlice<int>.Range(8).Reshape(2, 2, 2);
             Console.WriteLine(a);
-            Assert.AreEqual("[[[0, 1], \r\n" +                                    "[2, 3]], \r\n" +                                    "[[4, 5], \r\n" +                                    "[6, 7]]]", a.ToString(flat: false));
+            Assert.AreEqual("[[[0, 1],\r\n" +                                    "  [2, 3]],\r\n" +                                    "\r\n" +                                    " [[4, 5],\r\n" +                                    "  [6, 7]]]", a.ToString(flat: false));
         }
     }
 }
