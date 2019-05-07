@@ -2,6 +2,10 @@
 
 <code>ArraySlice&lt;T&gt;</code> is a lightweight wrapper around indexable .NET data structures like <code>T[]</code> or <code>IList&lt;T&gt;</code> for creating arbitrary N-dimimensional views of the data as well as views of (sparse) sub-sections of ArraySlices without copying the underlying data.
 
+## Motivation
+
+<code>ArraySlice&lt;T&gt;</code> is inspired by the array data structure of the popular Python library [NumPy](https://www.numpy.org/) which allows to create N-dimensional views of the original array and allows to work with slices without copying. <code>ArraySlice&lt;T&gt;</code> implements the same slicing syntax as NumPy. In contrast to NumPy, however, <code>ArraySlice&lt;T&gt;</code> does not offer any numerical computation functions. It merely focuses on the view and slicing mechanics in order to remain small and light-weight. If you are interested in a full C# port of NumPy take a look at the [NumSharp](https://github.com/SciSharp/NumSharp) which, I also contribute to. The view mechanics and the slicing algorithm of <code>ArraySlice&lt;T&gt;</code> are one of my main contributions to NumSharp.
+
 ## Use Cases
 ### Working with sub-sections of an array efficiently
 Similar to <code>ArraySegment&lt;T&gt;</code>, <code>Span&lt;T&gt;</code> or <code>Memory&lt;T&gt;</code>, you can create views of array sections with <code>ArraySlice&lt;T&gt;</code>. But it can do a lot more than the other solutions: 
@@ -38,12 +42,6 @@ Assert.AreEqual("stanleY yelnatS", string.Join("", a.GetSlice("::-1")));
 ```
 
 Slicing with a negative step is effectively reversing the slice's order. What's nice about that is, that it requires no copying or enumeration of the data to complete this operation much like <code>IEnumerable<T>.Reverse()</code>. The difference is that, the view (which is the result of the operation <code> a.GetSlice("::-1")</code>) presents the data in reversed order and you can index into that reversed sequence without ever having to enumerate it at all. Also, due to the fact that <code>IEnumerators</code> can only be enumerated once, they usually are not suitable for being passed in and out of functions.
-
-## Motivation
-
-<code>ArraySlice&lt;T&gt;</code> is inspired by the array data structure of the popular Python library [NumPy](https://www.numpy.org/) which always creates a view of the original array, no matter what operation is applied to it. <code>ArraySlice&lt;T&gt;</code> implements the same slicing syntax as NumPy and always creates a view of the original data, even if you for instance slice out 1D rows of 2D planes that were sliced out of a 3D volume. In contrast to NumPy, however, <code>ArraySlice&lt;T&gt;</code> does not offer any numerical computation functions. It merely focuses on the view and slicing mechanics in order to remain small and light-weight. 
-
-By the way, the view mechanics and the slicing algorithm of <code>ArraySlice&lt;T&gt;</code> are one of my main contributions to [NumSharp](https://github.com/SciSharp/NumSharp) which is a C# port of NumPy.
 
 ## ArraySlice&lt;T&gt; Usage
 ### Creating an ArraySlice 
