@@ -75,9 +75,9 @@ Note: in order to be able to represent data as an N-dimensional volume, the leng
 ### Slice notation
 <code>ArraySlice&lt;T&gt;</code> can be sliced using Python slice notation (with the exception that ArraySlice<T> does not copy the underlying array data, like NumPy. 
 
-A slice is constructed by **start:stop:step** notation
+A slice is constructed either by  **range notation** <code>["start:stop:step"]</code> or by **index notation** <code>["index"]</code>.
 
-Examples: 
+Range Notation Examples: 
 
 ```csharp
 a["5:10"]        // return 5 elements starting at index 5 through index 9
@@ -133,12 +133,12 @@ The above summary of the slicing notation showed only 1D examples. <code>ArraySl
 
 ```csharp
 a[":"]           // return everything (but without copying)
-a["5, :"]        // return the whole 5th row of a 2D matrix
+a["5, :"]        // return the whole 5th row of a 2D matrix (index notation, range notation)
 a[Slice.Index(5), Slice.All()]   // same as ["5, :"]
 a["5, :100"]     // return the first 100 elements of the 5th row
 ```
 
-Note that <code>ArraySlice&lt;T&gt;</code> represents 2D matrices in **row major** style, meaning that you address an element in a 2D array like this: <code>a[row, column]</code>. By this definition you can access a column by indexing the row with ":" like this:
+Note that <code>ArraySlice&lt;T&gt;</code> represents 2D matrices in **row major** style, meaning that you address an element in a 2D array like this: <code>a[row, column]</code>. By this definition you can access a column by indexing the rows with ":" (= range over all rows) like this:
 
 ```csharp
 a[":, 5"]        // return the whole 5th column of a 2D matrix
@@ -148,7 +148,7 @@ a[":100, 5"]     // return the first 100 elements of the 5th column
 
 ### Slicing N-dimensional arrays
 
-When slicing an N-dimensional slice of an N-dimensional ArraySlice you have to specify N slicing definitions, obviously.
+When slicing an N-dimensional slice of an N-dimensional ArraySlice you can specify N slicing definitions to define how the volume is or is not reduced in every dimension. Consider the following example where we cut a smaller cube out of a cube.
 
 ```csharp
 var cube=ArraySlice<int>.Range(27).Reshape(3,3,3);
@@ -160,86 +160,32 @@ If you specify less slicing definitions than dimensions, the missing dimensions 
 
 ### Reducing dimensions
 
+When you specify an index instead of a range (i.e. <code>["5"]</code> instead of <code>["5:6:1"]</code>) you get a slice of reduced dimensions. Let me explain in more detail:
 
+Let's say you want to get a row or a column out of a 2D matrix as a 1D Vector:
+```csharp
+var matrix=ArraySlice<int>.Range(25).Reshape(5,5);
+// slicing the 2nd row
+var row = matrix["1"]; // Note: this is NOT the same as matrix[1] which gives the first element of that row 
+// slicing the 2nd colum
+var column = matrix[":,1"];
+```
+
+The result of both slicing operations is a 1D vector of shape (5), so we have effectively reduced the dimensions from two to one. In comparison, if not using index notation for slicing but range notation we get a 2D matrix with only one column or one row:
+
+```csharp
+var matrix=ArraySlice<int>.Range(25).Reshape(5,5);
+// slicing the 2nd row with range notation
+var row = matrix["1:2"];
+// slicing the 2nd colum with range notation
+var column = matrix[":,1:2"];
+```
+
+As a result of slicing with range notation above sample gives us <code>row</code> as a 2D matrix of shape (1,5) and <code>column</code> as a matrix of shape (5,1).
 
 ## Examples
 
-### Example: Bitmap Manipulation
-Let's say you have no image manipulation library and you want to manipulate the pixels of an image as RGB <code>byte[]</code>:
 
-```csharp
-    var width = 4; // px
-    var height = 4; // px
-    var bytes_per_pixel = 3; // r, g, b
-
-    // note that Slice and Dice uses the row major coordinate system like numpy
-    // so the coordinate order is y, x, color in this example
-    var shape = new Shape(height, width, bytes_per_pixel);
-
-    // create the raw pixel data using Shape.Size to calculate how long the array 
-    // must be to hold a 3D volume of h x w x byte_per_pixel
-    var raw_bytes = new byte[shape.Size];
-    var image = new ArraySlice<byte>(raw_bytes, shape);
-
-    // we can now access single pixel values by coordinates
-
-    // get the three bytes for the pixel at the upper right corner 
-    // as ArraySlice<T> without copying any data!
-    var pixel = image.GetSlice("0, 3");
-    Console.WriteLine("pixel: " + pixel);  // prints: pixel: [0, 0, 0]
-
-    // set the pixel to white
-    image.SetValues(new int[] { 0, 3 }, new byte[] { 255, 255, 255 });
-
-    // get the 2 by 2 pixel patch at the center and color it green without copying any data:
-    var patch = image.GetSlice("1:3, 1:3, 1"); // this gets only the green channel 
-    // note how we can now use relative coordinates in the patch
-    // since this is a slice of the green channel we can directly set the green byte at location (y,x)
-    for (int y = 0; y < 2; y++)
-	for (int x = 0; x < 2; x++)
-	    patch[y, x] = 255; 
-
-    // print the bitmap out row by row like this (black = '#', white = ' ', green= 'o')
-    // obviously by using slicing this is a no-brainer
-    for (int y = 0; y < height; y++)
-    {
-	Console.Write("|");
-	// Slice.Index gives us a slice-definition for a row at index y. 
-	// You could also use image.GetSlice($"{y}")
-	var row =image.GetSlice(Slice.Index(y));
-	for (int x = 0; x < width; x++)
-	{
-	    var red = row[x, 0];
-	    var green = row[x, 1];
-	    if (red == 0 && green==0)
-	    {
-		// must be black
-		Console.Write("#");
-		continue;
-	    }
-	    if (red==255 && green==255)
-	    {
-		// must be white
-		Console.Write(" ");
-		continue;
-	    }
-	    if (green==255)
-		Console.Write("o");
-	}
-	// at the end of the row, break the line
-	Console.WriteLine("|");
-    }
-```
-
-output:
-
-```text
-pixel: [0, 0, 0]
-|### |
-|#oo#|
-|#oo#|
-|####|
-```
 
 ## License
 
