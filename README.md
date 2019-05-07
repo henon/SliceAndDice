@@ -3,14 +3,11 @@
 <code>ArraySlice&lt;T&gt;</code> is a lightweight wrapper around indexable data structures like <code>T[]</code> for creating arbitrary N-dimimensional views of the data as well as views of (sparse) sub-sections of ArraySlices without copying the underlying data.
 
 ## Use Cases
-
-### Working with high-dimensional data efficiently
-
-![Reshape and Slice](doc/images/reshape_and_slice_v3.png)
-
-If you need to treat a data array as a volume and work with parts of it without having to do mind-boggling coordinate transformation calculations then <code>ArraySlice&lt;T&gt;</code> is for you.
-
-All <code>ArraySlices</code> created by <code>Reshape</code> or <code>Slice</code> operations are only views of the original data. When you iterate over, read or write elements of a view you access the original data array. <code>ArraySlice&lt;T&gt;</code> transparently does the appropriate index transformations so you can index into the slice using relative coordinates.
+### Working with sub-sections of an array efficiently
+Similar to <code>ArraySegment&lt;T&gt;</code>, <code>Span&lt;T&gt;</code> or <code>Memory&lt;T&gt;</code>, you can create views of array sections with <code>ArraySlice&lt;T&gt;</code>. But it can do a lot more than the other solutions: 
+* Stepping: slicing every Nth element
+* Reshaping: presenting the data as arbitrary N-dimensional shapes
+* Nesting: slices can be further sliced
 
 ### Multiple views of the same data
 
@@ -23,6 +20,14 @@ Being able to pass only local portions of the underlying data (i.e. small patche
 ![Nested Views](doc/images/repeated_slicing.png)
 
 The end-result of the chained slicing operations <code>.Slice("2:8,::2").Slice("1::3").Slice(":,2:")</code> could also be obtained by a single operation like this: <code>.Slice("3:8:3,2::2")</code>. <code>ArraySlice&lt;T&gt;</code> optimizes this internally so you don't have to pollute your algorithms with knowledge about the structure of the data. 
+
+### Working with high-dimensional data efficiently
+
+![Reshape and Slice](doc/images/reshape_and_slice_v3.png)
+
+If you need to treat a data array as a volume and work with parts of it without having to do mind-boggling coordinate transformation calculations then <code>ArraySlice&lt;T&gt;</code> is for you.
+
+All <code>ArraySlices</code> created by <code>Reshape</code> or <code>Slice</code> operations are only views of the original data. When you iterate over, read or write elements of a view you access the original data array. <code>ArraySlice&lt;T&gt;</code> transparently does the appropriate index transformations so you can index into the slice using relative coordinates.
 
 ### Efficiently reverse the order of the elements
 
