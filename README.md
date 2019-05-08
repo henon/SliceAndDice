@@ -4,7 +4,7 @@
 
 ## Motivation
 
-<code>ArraySlice&lt;T&gt;</code> is inspired by the array data structure of the popular Python library [NumPy](https://www.numpy.org/) which allows to create N-dimensional views of the original array and allows to work with slices without copying. <code>ArraySlice&lt;T&gt;</code> implements the same slicing syntax as NumPy. In contrast to NumPy, however, <code>ArraySlice&lt;T&gt;</code> does not offer any numerical computation functions. It merely focuses on the view and slicing mechanics in order to remain small and light-weight. If you are interested in a full C# port of NumPy take a look at the [NumSharp](https://github.com/SciSharp/NumSharp) which, I also contribute to. The view mechanics and the slicing algorithm of <code>ArraySlice&lt;T&gt;</code> are one of my main contributions to NumSharp.
+<code>ArraySlice&lt;T&gt;</code> is inspired by the array data structure of the popular Python library [NumPy](https://www.numpy.org/) which allows to create N-dimensional views of the original array and allows to work with slices without copying. <code>ArraySlice&lt;T&gt;</code> implements the same slicing syntax as NumPy. In contrast to NumPy, however, <code>ArraySlice&lt;T&gt;</code> does not offer any numerical computation functions. It merely focuses on the view and slicing mechanics in order to remain small and light-weight. If you are interested in a full C# port of NumPy take a look at the [NumSharp](https://github.com/SciSharp/NumSharp) which, I also contribute to. The view mechanics and the slicing algorithm of <code>ArraySlice&lt;T&gt;</code> are one of [my main contributions to NumSharp](https://henon.wordpress.com/2019/05/08/slicing-in-numsharp/).
 
 ## Use Cases
 ### Working with sub-sections of an array efficiently
